@@ -4,46 +4,29 @@
     {{-- ===== Hero banners ===== --}}
     <section class="mx-auto max-w-[1500px] px-4 py-5 lg:px-8">
         <div class="grid grid-cols-1 gap-4 md:grid-cols-[2.08fr_1fr]">
-            <a href="#" class="block overflow-hidden rounded-md">
-                <img src="{{ asset('images/banner-1.png') }}" alt="Banner 1"
-                     class="block h-auto w-full transition duration-300 hover:scale-[1.03]">
-            </a>
-            <a href="#" class="block overflow-hidden rounded-md">
-                <img src="{{ asset('images/banner-2.png') }}" alt="Banner 2"
-                     class="block h-auto w-full transition duration-300 hover:scale-[1.03]">
-            </a>
+            @foreach (config('site.hero') as $banner)
+                <a href="{{ $banner['link'] }}" class="block overflow-hidden rounded-md">
+                    <img src="{{ asset($banner['image']) }}" alt="Banner"
+                         class="block h-auto w-full transition duration-300 hover:scale-[1.03]">
+                </a>
+            @endforeach
         </div>
     </section>
 
     {{-- ===== Featured Categories ===== --}}
-    @php
-        $categories = [
-            ['name' => 'Mango Pickle',      'emoji' => '🥭'],
-            ['name' => 'Beef Tripe',        'emoji' => '🍖'],
-            ['name' => 'Garlic Pickle',     'emoji' => '🧄'],
-            ['name' => 'Olive Pickle',      'emoji' => '🫒'],
-            ['name' => 'Jujube Pickle',     'emoji' => '🍑'],
-            ['name' => 'Chili Pickle',      'emoji' => '🌶️'],
-            ['name' => 'Chicken Pickle',    'emoji' => '🍗'],
-            ['name' => 'Mixed Pickle',      'emoji' => '🫙'],
-            ['name' => 'Tamarind Pickle',   'emoji' => '🟤'],
-            ['name' => 'Dried Fish Pickle', 'emoji' => '🐟'],
-        ];
-    @endphp
-
-    <section class="bg-[#faf7f2] py-10">
+    <section class="bg-[#FBF9F5] py-10">
         <div class="mx-auto max-w-[1500px] px-4 lg:px-8">
             <h2 class="text-center font-display text-3xl font-bold tracking-wide text-[#0c3a2e]">{{ __('Featured Categories') }}</h2>
 
             {{-- Continuous auto-scrolling marquee (pauses on hover) --}}
             <div class="marquee-pause mt-8 overflow-hidden">
                 <div class="flex w-max animate-marquee">
-                    @foreach (array_merge($categories, $categories) as $cat)
-                        <a href="#" class="group mr-5 flex w-32 shrink-0 flex-col items-center gap-3">
+                    @foreach ($navCategories->concat($navCategories) as $cat)
+                        <a href="{{ route('products.index', ['category' => $cat->name]) }}" class="group mr-5 flex w-32 shrink-0 flex-col items-center gap-3">
                             <div class="flex h-28 w-28 items-center justify-center rounded-2xl border border-gray-200/70 bg-white/40 transition group-hover:-translate-y-1">
-                                <span class="text-5xl leading-none">{{ $cat['emoji'] }}</span>
+                                <span class="text-5xl leading-none">{{ $cat->emoji }}</span>
                             </div>
-                            <span class="text-center text-sm font-medium text-gray-700 group-hover:text-[#f47b20]">{{ __($cat['name']) }}</span>
+                            <span class="text-center text-sm font-medium text-gray-700 group-hover:text-[#f47b20]">{{ __($cat->name) }}</span>
                         </a>
                     @endforeach
                 </div>
@@ -52,16 +35,37 @@
     </section>
 
     {{-- ===== Top Selling Products ===== --}}
-    <section class="py-10">
-        <div class="mx-auto max-w-[1500px] px-4 lg:px-8">
-            <h2 class="text-center font-display text-3xl font-bold tracking-wide text-[#0c3a2e]">{{ __('Top Selling Products') }}</h2>
+    <section class="relative overflow-hidden py-14 lg:py-16">
+        {{-- Soft, slowly panning colorful gradient backdrop (light, not dark) --}}
+        <div class="animate-gradient-pan pointer-events-none absolute inset-0 bg-gradient-to-br from-[#fff3e6] via-[#fdfaf4] to-[#edf7e3]"></div>
 
-            <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {{-- Drifting decorative blobs --}}
+        <div class="animate-blob-float pointer-events-none absolute -left-20 top-2 h-72 w-72 rounded-full bg-[#f47b20]/15 blur-3xl"></div>
+        <div class="animate-blob-float-slow pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[#7cb342]/15 blur-3xl"></div>
+        <div class="animate-blob-float-delay pointer-events-none absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-[#ffce85]/25 blur-3xl"></div>
+
+        <div class="relative mx-auto max-w-[1500px] px-4 lg:px-8">
+            {{-- Heading with eyebrow + gradient underline --}}
+            <div class="flex flex-col items-center text-center">
+                <span class="animate-float-y inline-flex items-center gap-1.5 rounded-full bg-white/70 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#f47b20] shadow-sm ring-1 ring-[#f47b20]/15 backdrop-blur">
+                    <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2c.4 2.4-1 4-2.4 5.2C8 8.6 6.5 10 6.5 12.5a5.5 5.5 0 0 0 11 0c0-1.6-.7-3-1.6-4.2.3 1-.2 2-1 2.6 0-2.3-1.3-4.2-2.9-5.6C10.6 4.2 12.2 3 12 2Z" />
+                    </svg>
+                    {{ __('Customer Favourites') }}
+                </span>
+                <h2 class="mt-3 font-display text-3xl font-bold tracking-wide text-[#0c3a2e] lg:text-4xl">{{ __('Top Selling Products') }}</h2>
+                <span class="mt-3 h-1 w-24 rounded-full bg-gradient-to-r from-[#f47b20] via-[#ffce85] to-[#7cb342]"></span>
+            </div>
+
+            <div class="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
                 @foreach ($topProducts as $product)
-                    <div class="relative flex items-center gap-5 rounded-lg bg-white p-5 shadow-sm transition hover:shadow-md sm:gap-6 sm:p-6">
+                    <div class="group relative overflow-hidden rounded-2xl border border-white/70 bg-white/80 p-5 shadow-md shadow-[#0c3a2e]/5 backdrop-blur-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#f47b20]/15 sm:p-6">
+                        {{-- Animated top accent bar (grows in on hover) --}}
+                        <span class="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-[#f47b20] to-[#7cb342] transition-transform duration-300 group-hover:scale-x-100"></span>
+
                         {{-- Best Selling badge --}}
                         @if ($product->is_best_selling)
-                            <span class="absolute right-0 top-0 flex items-center gap-1 rounded-bl-lg rounded-tr-lg bg-[#e74c3c] px-2.5 py-1 text-[11px] font-semibold text-white">
+                            <span class="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-gradient-to-r from-[#e74c3c] to-[#f47b20] px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm">
                                 <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                                     <path d="M12 2c.4 2.4-1 4-2.4 5.2C8 8.6 6.5 10 6.5 12.5a5.5 5.5 0 0 0 11 0c0-1.6-.7-3-1.6-4.2.3 1-.2 2-1 2.6 0-2.3-1.3-4.2-2.9-5.6C10.6 4.2 12.2 3 12 2Z" />
                                 </svg>
@@ -69,45 +73,58 @@
                             </span>
                         @endif
 
-                        {{-- Image --}}
-                        <div class="flex h-36 w-32 shrink-0 items-center justify-center">
-                            <img src="{{ asset($product->image) }}" alt="{{ __($product->name) }}"
-                                 class="max-h-full max-w-full object-contain">
-                        </div>
-
-                        {{-- Details --}}
-                        <div class="min-w-0 flex-1">
-                            <h3 class="text-lg font-semibold text-[#0c3a2e]">{{ __($product->name) }}</h3>
-
-                            <div class="mt-2 flex items-center gap-2">
-                                <span class="text-base font-bold text-[#f47b20]">৳{{ number_format($product->price) }}</span>
-                                @if ($product->on_sale)
-                                    <span class="text-sm text-gray-400 line-through">৳{{ number_format($product->old_price) }}</span>
-                                @endif
+                        <div class="relative flex items-center gap-5 sm:gap-6">
+                            {{-- Image (soft gradient tile, zooms on hover) --}}
+                            <div class="flex h-36 w-32 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#fff7ee] to-[#eef7e6] ring-1 ring-black/[0.03]">
+                                <a href="{{ route('products.show', $product) }}" class="flex h-full w-full items-center justify-center">
+                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
+                                         class="max-h-[85%] max-w-[85%] object-contain drop-shadow-sm transition duration-300 group-hover:-rotate-2 group-hover:scale-110">
+                                </a>
                             </div>
 
-                            @if ($product->on_sale)
-                                <span class="mt-2 inline-block rounded bg-[#7cb342] px-2 py-0.5 text-[11px] font-semibold text-white">
-                                    {{ __('Save') }} ৳{{ number_format($product->save_amount) }}
-                                </span>
-                            @endif
+                            {{-- Details --}}
+                            <div class="min-w-0 flex-1">
+                                <h3 class="text-lg font-semibold text-[#0c3a2e]">
+                                    <a href="{{ route('products.show', $product) }}" class="transition hover:text-[#f47b20]">{{ __($product->name) }}</a>
+                                </h3>
 
-                            {{-- Actions --}}
-                            <div class="mt-4 flex flex-wrap items-center gap-3">
-                                <button type="button"
-                                        class="flex items-center gap-1.5 rounded-md border border-[#f47b20] px-3 py-2 text-xs font-medium text-[#f47b20] transition hover:bg-[#f47b20] hover:text-white">
-                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-1.5 2.143-3.107 3.054-4.806l1.206-2.799a.75.75 0 0 0-.59-1.04l-12.36-1.236M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                    </svg>
-                                    {{ __('Add To Cart') }}
-                                </button>
-                                <button type="button"
-                                        class="flex items-center gap-1.5 rounded-md bg-[#f47b20] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#dd6c14]">
-                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-1.5 2.143-3.107 3.054-4.806l1.206-2.799a.75.75 0 0 0-.59-1.04l-12.36-1.236M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                    </svg>
-                                    {{ __('Buy now') }}
-                                </button>
+                                <div class="mt-2 flex items-center gap-2">
+                                    <span class="text-base font-bold text-[#f47b20]">৳{{ number_format($product->price) }}</span>
+                                    @if ($product->on_sale)
+                                        <span class="text-sm text-gray-400 line-through">৳{{ number_format($product->old_price) }}</span>
+                                    @endif
+                                </div>
+
+                                @if ($product->on_sale)
+                                    <span class="mt-2 inline-block rounded bg-[#7cb342] px-2 py-0.5 text-[11px] font-semibold text-white">
+                                        {{ __('Save') }} ৳{{ number_format($product->save_amount) }}
+                                    </span>
+                                @endif
+
+                                {{-- Actions --}}
+                                <div class="mt-4 flex flex-wrap items-center gap-3">
+                                    <form action="{{ route('cart.add', $product) }}" method="POST">
+                                        @csrf
+                                        <button type="submit"
+                                                class="flex items-center gap-1.5 rounded-md border border-[#f47b20] px-3 py-2 text-xs font-medium text-[#f47b20] transition hover:bg-[#f47b20] hover:text-white">
+                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-1.5 2.143-3.107 3.054-4.806l1.206-2.799a.75.75 0 0 0-.59-1.04l-12.36-1.236M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                            </svg>
+                                            {{ __('Add To Cart') }}
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('cart.add', $product) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="buy_now" value="1">
+                                        <button type="submit"
+                                                class="flex items-center gap-1.5 rounded-md bg-[#f47b20] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#dd6c14]">
+                                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-1.5 2.143-3.107 3.054-4.806l1.206-2.799a.75.75 0 0 0-.59-1.04l-12.36-1.236M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                            </svg>
+                                            {{ __('Buy now') }}
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -117,9 +134,17 @@
     </section>
 
     {{-- ===== Our Products ===== --}}
-    <section class="bg-[#faf7f2] py-12">
+    <section class="bg-[#FBF9F5] py-12">
         <div class="mx-auto max-w-[1500px] px-4 lg:px-8">
-            <h2 class="text-center font-display text-3xl font-bold tracking-wide text-[#0c3a2e]">{{ __('Our Products') }}</h2>
+            <div class="flex items-center justify-between gap-4">
+                <h2 class="font-display text-3xl font-bold tracking-wide text-[#0c3a2e]">{{ __('Our Products') }}</h2>
+                <a href="{{ route('products.index') }}" class="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-[#f47b20] transition hover:text-[#dd6c14]">
+                    {{ __('View All') }}
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </a>
+            </div>
 
             <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                 @foreach ($products as $product)
@@ -132,7 +157,7 @@
                         @endif
 
                         {{-- Image --}}
-                        <a href="#" class="flex h-44 items-center justify-center overflow-hidden rounded-md">
+                        <a href="{{ route('products.show', $product) }}" class="flex h-44 items-center justify-center overflow-hidden rounded-md">
                             <img src="{{ asset($product->image) }}" alt="{{ __($product->name) }}"
                                  class="h-full w-full object-contain transition duration-300 group-hover:scale-105">
                         </a>
@@ -140,7 +165,7 @@
                         {{-- Details --}}
                         <div class="mt-3 flex flex-1 flex-col">
                             <h3 class="line-clamp-2 min-h-[2.5rem] text-sm font-medium text-gray-800">
-                                <a href="#" class="transition hover:text-[#f47b20]">{{ __($product->name) }}</a>
+                                <a href="{{ route('products.show', $product) }}" class="transition hover:text-[#f47b20]">{{ __($product->name) }}</a>
                             </h3>
 
                             <div class="mt-2 flex items-center gap-2">
@@ -152,14 +177,17 @@
 
                             {{-- Buttons --}}
                             <div class="mt-3 flex items-center gap-2">
-                                <button type="button"
-                                        class="flex flex-1 items-center justify-center gap-1.5 rounded-md border border-[#f47b20] px-2 py-2 text-xs font-semibold text-[#f47b20] transition hover:bg-[#f47b20] hover:text-white">
-                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-1.5 2.143-3.107 3.054-4.806l1.206-2.799a.75.75 0 0 0-.59-1.04l-12.36-1.236M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                    </svg>
-                                    {{ __('Add To Cart') }}
-                                </button>
-                                <a href="https://wa.me/8801700000000?text={{ urlencode(__('I want to order:') . ' ' . __($product->name)) }}"
+                                <form action="{{ route('cart.add', $product) }}" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit"
+                                            class="flex w-full items-center justify-center gap-1.5 rounded-md border border-[#f47b20] px-2 py-2 text-xs font-semibold text-[#f47b20] transition hover:bg-[#f47b20] hover:text-white">
+                                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-1.5 2.143-3.107 3.054-4.806l1.206-2.799a.75.75 0 0 0-.59-1.04l-12.36-1.236M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                        </svg>
+                                        {{ __('Add To Cart') }}
+                                    </button>
+                                </form>
+                                <a href="https://wa.me/{{ config('site.whatsapp') }}?text={{ urlencode(__('I want to order:') . ' ' . $product->name) }}"
                                    target="_blank" rel="noopener" aria-label="WhatsApp"
                                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#25D366] text-white transition hover:bg-[#1da851]">
                                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -200,7 +228,7 @@
         ];
     @endphp
 
-    <section id="about" class="relative overflow-hidden bg-gradient-to-b from-white to-[#faf7f2] py-16 lg:py-20">
+    <section id="about" class="relative overflow-hidden bg-gradient-to-b from-white to-[#FBF9F5] py-16 lg:py-20">
         {{-- Decorative blobs --}}
         <div class="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full bg-[#7cb342]/10 blur-3xl"></div>
         <div class="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-[#f47b20]/10 blur-3xl"></div>

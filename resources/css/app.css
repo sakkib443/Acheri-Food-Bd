@@ -25,3 +25,45 @@
 .marquee-pause:hover .animate-marquee {
     animation-play-state: paused;
 }
+
+/* ===== Top Selling section — soft animated background & accents ===== */
+
+/* Gently panning colorful gradient backdrop */
+@keyframes gradient-pan {
+    0%, 100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+}
+.animate-gradient-pan {
+    background-size: 200% 200%;
+    animation: gradient-pan 18s ease infinite;
+    will-change: background-position;
+}
+
+/* Slowly drifting decorative blobs */
+@keyframes blob-float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(24px, -28px) scale(1.08); }
+    66%      { transform: translate(-18px, 16px) scale(0.94); }
+}
+.animate-blob-float       { animation: blob-float 16s ease-in-out infinite; }
+.animate-blob-float-slow  { animation: blob-float 24s ease-in-out infinite; }
+.animate-blob-float-delay { animation: blob-float 20s ease-in-out infinite; animation-delay: -8s; }
+
+/* Soft up/down float for badges */
+@keyframes float-y {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+}
+.animate-float-y { animation: float-y 4s ease-in-out infinite; }
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .animate-gradient-pan,
+    .animate-blob-float,
+    .animate-blob-float-slow,
+    .animate-blob-float-delay,
+    .animate-float-y,
+    .animate-marquee {
+        animation: none !important;
+    }
+}

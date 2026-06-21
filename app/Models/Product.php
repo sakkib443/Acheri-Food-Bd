@@ -22,6 +22,14 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     /**
+     * Use the slug for route model binding.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

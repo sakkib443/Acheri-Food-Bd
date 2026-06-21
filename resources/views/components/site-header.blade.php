@@ -1,20 +1,3 @@
-@php
-    $menu = [
-        ['label' => 'Combos',            'dropdown' => false],
-        ['label' => 'Offer Zone',        'dropdown' => false],
-        ['label' => 'Mango Pickle',      'dropdown' => false],
-        ['label' => 'Beef Tripe',        'dropdown' => false],
-        ['label' => 'Garlic Pickle',     'dropdown' => false],
-        ['label' => 'Olive Pickle',      'dropdown' => false],
-        ['label' => 'Jujube Pickle',     'dropdown' => false],
-        ['label' => 'Chili Pickle',      'dropdown' => false],
-        ['label' => 'Chicken Pickle',    'dropdown' => false],
-        ['label' => 'Mixed Pickle',      'dropdown' => false],
-        ['label' => 'Tamarind Pickle',   'dropdown' => false],
-        ['label' => 'Dried Fish Pickle', 'dropdown' => false],
-    ];
-@endphp
-
 <header class="w-full bg-white shadow-sm">
     {{-- ===== Top bar ===== --}}
     <div class="mx-auto flex max-w-[1500px] items-center gap-4 px-4 py-3 lg:px-8">
@@ -28,7 +11,7 @@
         <div class="flex-1"></div>
 
         {{-- Search --}}
-        <form action="#" method="GET" class="relative hidden w-[520px] md:block">
+        <form action="{{ route('products.index') }}" method="GET" class="relative hidden w-[520px] md:block">
             <input type="text" name="q" placeholder="{{ __('Search in...') }}"
                    class="w-full rounded-md bg-[#f2f2f2] py-3 pl-4 pr-10 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0c3a2e]/25" />
             <button type="submit" aria-label="Search"
@@ -73,7 +56,7 @@
             </details>
 
             {{-- Sign In --}}
-            <a href="#" class="flex flex-col items-center gap-1 text-[#0c3a2e] transition hover:text-[#f47b20]">
+            <a href="{{ route('admin.login') }}" class="flex flex-col items-center gap-1 text-[#0c3a2e] transition hover:text-[#f47b20]">
                 <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                      stroke="currentColor" stroke-width="1.6">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -83,14 +66,16 @@
             </a>
 
             {{-- Cart --}}
-            <a href="#" class="flex flex-col items-center gap-1 text-[#0c3a2e] transition hover:text-[#f47b20]">
+            <a href="{{ route('cart.index') }}" class="flex flex-col items-center gap-1 text-[#0c3a2e] transition hover:text-[#f47b20]">
                 <span class="relative">
                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                          stroke="currentColor" stroke-width="1.6">
                         <path stroke-linecap="round" stroke-linejoin="round"
                               d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-1.5 2.143-3.107 3.054-4.806l1.206-2.799a.75.75 0 0 0-.59-1.04l-12.36-1.236M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                     </svg>
-                    <span class="absolute -right-2.5 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#f47b20] px-1 text-[10px] font-bold leading-none text-white">0</span>
+                    @if (\App\Support\Cart::count() > 0)
+                        <span class="absolute -right-2.5 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#f47b20] px-1 text-[10px] font-bold leading-none text-white">{{ \App\Support\Cart::count() }}</span>
+                    @endif
                 </span>
                 <span class="text-[11px] font-medium">{{ __('Cart') }}</span>
             </a>
@@ -109,16 +94,21 @@
     {{-- ===== Category nav ===== --}}
     <nav class="bg-[#0c3a2e] text-white">
         <ul class="mx-auto flex max-w-[1500px] items-center gap-x-7 overflow-x-auto px-4 py-3 text-sm font-medium lg:justify-end lg:px-8">
-            @foreach ($menu as $item)
+            <li>
+                <a href="{{ route('products.index') }}" class="flex items-center gap-1 whitespace-nowrap transition hover:text-[#f4a93c]">
+                    {{ __('Combos') }}
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('products.index') }}" class="flex items-center gap-1 whitespace-nowrap transition hover:text-[#f4a93c]">
+                    {{ __('Offer Zone') }}
+                </a>
+            </li>
+            @foreach ($navCategories as $cat)
                 <li>
-                    <a href="#" class="flex items-center gap-1 whitespace-nowrap transition hover:text-[#f4a93c]">
-                        {{ __($item['label']) }}
-                        @if ($item['dropdown'])
-                            <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                            </svg>
-                        @endif
+                    <a href="{{ route('products.index', ['category' => $cat->name]) }}" class="flex items-center gap-1 whitespace-nowrap transition hover:text-[#f4a93c]">
+                        @if ($cat->emoji)<span aria-hidden="true">{{ $cat->emoji }}</span>@endif
+                        {{ __($cat->name) }}
                     </a>
                 </li>
             @endforeach

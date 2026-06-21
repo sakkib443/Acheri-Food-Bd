@@ -12,8 +12,19 @@
     @fonts
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-white text-[#1b1b18] antialiased">
+<body class="min-h-screen bg-[#FBF9F5] text-[#1b1b18] antialiased">
     <x-site-header />
+
+    @if (session('success'))
+        <div class="border-b border-green-200 bg-green-50">
+            <div class="mx-auto flex max-w-[1500px] items-center gap-2 px-4 py-2.5 text-sm font-medium text-green-800 lg:px-8">
+                <svg class="h-5 w-5 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                {{ session('success') }}
+            </div>
+        </div>
+    @endif
 
     <main>
         @yield('content')

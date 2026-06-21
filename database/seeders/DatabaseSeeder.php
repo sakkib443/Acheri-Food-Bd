@@ -15,13 +15,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Admin account for the backend (change the password after first login).
+        User::updateOrCreate(
+            ['email' => 'admin@acherifoodbd.com'],
+            ['name' => 'Admin', 'password' => 'password'],
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            CategorySeeder::class,
+            ProductSeeder::class,
         ]);
-
-        $this->call(ProductSeeder::class);
     }
 }
