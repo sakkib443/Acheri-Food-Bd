@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "acheri",
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["artisan", "serve", "--host=127.0.0.1", "--port=5180"],
+      "cwd": "D:\\Ashraf Sir Project\\acheri-food-bd",
+      "port": 5180
+    }
+  ]
+}
