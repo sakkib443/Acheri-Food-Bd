@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? config('app.name', 'Acheri Food Bd') }}</title>
 
-    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
-    <link rel="apple-touch-icon" href="{{ asset(config('site.logo')) }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/Icon-03.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('images/Icon-03.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/Icon-03.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

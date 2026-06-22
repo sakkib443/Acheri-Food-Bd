@@ -32,3 +32,5 @@ deployment:
 
     # --- favicon -> ~/public_html ---
     - /bin/cp -f public/favicon.svg $PUB/favicon.svg
+    - /bin/mkdir -p $PUB/images
+    - /bin/cp -f public/images/Icon-03.png $PUB/images/Icon-03.png
