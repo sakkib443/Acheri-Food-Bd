@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
     {
         // Admin account for the backend (change the password after first login).
         User::updateOrCreate(
-            ['email' => 'admin@acherifoodbd.com'],
-            ['name' => 'Admin', 'password' => 'password'],
+            ['email' => 'admin@gmail.com'],
+            ['name' => 'Admin', 'password' => 'admin@gmail.com'],
         );
 
         $this->call([

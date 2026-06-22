@@ -244,7 +244,7 @@
                 <div class="absolute inset-0 -rotate-3 rounded-[2rem] bg-[#0c3a2e]/5"></div>
                 <div class="relative overflow-hidden rounded-[2rem] border border-gray-100 bg-white p-6 shadow-xl shadow-[#0c3a2e]/5 sm:p-8">
                     <div class="flex aspect-square items-center justify-center rounded-2xl bg-gradient-to-br from-[#faf7f2] to-[#f3ece0]">
-                        <img src="{{ asset('images/logo.png') }}" alt="Acheri Food Bd"
+                        <img src="{{ asset(config('site.logo')) }}" alt="{{ config('app.name') }}"
                              class="h-32 w-auto object-contain lg:h-40">
                     </div>
                 </div>

@@ -46,4 +46,51 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    /**
+     * Build a WhatsApp-ready order summary (with full product details) for the shop owner.
+     */
+    public function whatsappMessage(): string
+    {
+        $lines = [];
+        $lines[] = '🛒 *New Order — Acheri Food Bd*';
+        $lines[] = 'Order No: '.$this->order_number;
+        $lines[] = '';
+        $lines[] = '*Products:*';
+
+        foreach ($this->items as $item) {
+            $lines[] = '• '.$item->name.' × '.$item->quantity.' = ৳'.number_format($item->line_total);
+        }
+
+        $lines[] = '';
+        $lines[] = 'Subtotal: ৳'.number_format($this->subtotal);
+
+        if ($this->discount > 0) {
+            $lines[] = 'Discount'.($this->coupon_code ? ' ('.$this->coupon_code.')' : '').': -৳'.number_format($this->discount);
+        }
+
+        $lines[] = 'Delivery: ৳'.number_format($this->delivery_charge);
+        $lines[] = '*Total: ৳'.number_format($this->total).'*';
+        $lines[] = '';
+        $lines[] = '*Customer:*';
+        $lines[] = 'Name: '.$this->customer_name;
+        $lines[] = 'Phone: '.$this->phone;
+        $lines[] = 'Address: '.$this->address.($this->city ? ', '.$this->city : '');
+
+        if ($this->note) {
+            $lines[] = 'Note: '.$this->note;
+        }
+
+        $lines[] = 'Payment: Cash on Delivery';
+
+        return implode("\n", $lines);
+    }
+
+    /**
+     * wa.me link that opens WhatsApp with the order summary pre-filled.
+     */
+    public function whatsappUrl(): string
+    {
+        return 'https://wa.me/'.config('site.whatsapp').'?text='.rawurlencode($this->whatsappMessage());
+    }
 }

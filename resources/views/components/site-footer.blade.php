@@ -17,7 +17,7 @@
             {{-- Brand --}}
             <div>
                 <span class="inline-flex rounded-lg bg-white p-2">
-                    <img src="{{ asset('images/logo.png') }}" alt="Acheri Food Bd" class="h-12 w-auto object-contain">
+                    <img src="{{ asset(config('site.logo')) }}" alt="{{ config('app.name') }}" class="h-12 w-auto object-contain">
                 </span>
                 <p class="mt-4 text-sm leading-relaxed text-gray-300">
                     {{ __('Pure & authentic homemade pickles, delivered fresh across Bangladesh.') }}

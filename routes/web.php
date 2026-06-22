@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
+use App\Http\Controllers\Admin\SiteContentController as AdminSiteContentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
@@ -56,6 +57,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('customers/{phone}', [AdminCustomerController::class, 'show'])->name('customers.show');
         Route::get('settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
         Route::put('settings', [AdminSettingsController::class, 'update'])->name('settings.update');
+
+        // Site Content (logo, hero banners, contact)
+        Route::prefix('site-content')->name('site-content.')->group(function () {
+            Route::get('branding', [AdminSiteContentController::class, 'branding'])->name('branding');
+            Route::put('branding', [AdminSiteContentController::class, 'updateBranding'])->name('branding.update');
+            Route::get('hero', [AdminSiteContentController::class, 'hero'])->name('hero');
+            Route::put('hero', [AdminSiteContentController::class, 'updateHero'])->name('hero.update');
+        });
     });
 });
 
@@ -65,3 +74,23 @@ Route::get('/language/{locale}', function (string $locale) {
     }
     return back();
 })->name('language.switch');
+
+/*
+|--------------------------------------------------------------------------
+| One-time web installer (for shared hosting without SSH/Terminal)
+|--------------------------------------------------------------------------
+| Disabled by default. To use it: set ALLOW_WEB_SETUP=true in .env, open
+| https://yourdomain.com/__setup once (runs migrations + seeders), then set
+| ALLOW_WEB_SETUP=false again. Do NOT run `php artisan route:cache` while it
+| is enabled.
+*/
+if (env('ALLOW_WEB_SETUP', false)) {
+    Route::get('/__setup', function () {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        $output = \Illuminate\Support\Facades\Artisan::output();
+        \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+        $output .= "\n".\Illuminate\Support\Facades\Artisan::output();
+
+        return response('<pre style="font:14px/1.5 monospace;padding:20px">'.e($output)."\nDONE. Now set ALLOW_WEB_SETUP=false in .env</pre>");
+    });
+}

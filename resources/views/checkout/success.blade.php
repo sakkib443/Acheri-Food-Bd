@@ -47,10 +47,30 @@
                 </div>
             </div>
 
+            {{-- Send order to WhatsApp --}}
+            <div class="mt-6 rounded-2xl border border-[#25D366]/30 bg-[#25D366]/5 p-6 text-center">
+                <p class="text-sm text-gray-600">{{ __('Please confirm your order by sending the details to us on WhatsApp.') }}</p>
+                <a href="{{ $order->whatsappUrl() }}" target="_blank" rel="noopener" id="waOrder"
+                   class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1da851] sm:w-auto">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.04 2a9.9 9.9 0 0 0-8.46 15.05L2 22l5.07-1.33A9.9 9.9 0 1 0 12.04 2Zm0 1.8a8.1 8.1 0 1 1-4.13 15.06l-.3-.18-3 .79.8-2.93-.2-.31A8.1 8.1 0 0 1 12.04 3.8Zm4.66 11.43c-.25-.13-1.47-.72-1.7-.8-.23-.09-.4-.13-.56.13-.16.25-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.13-1.05-.39-2-1.23-.74-.66-1.24-1.47-1.38-1.72-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.13-.14.16-.25.25-.41.08-.16.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43l-.48-.01c-.16 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.13.16 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.14-1.18-.06-.1-.22-.16-.47-.29Z" />
+                    </svg>
+                    {{ __('Confirm order on WhatsApp') }}
+                </a>
+            </div>
+
             <div class="mt-6 flex justify-center gap-3">
                 <a href="{{ route('products.index') }}" class="rounded-md bg-[#f47b20] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#dd6c14]">{{ __('Continue Shopping') }}</a>
                 <a href="{{ url('/') }}" class="rounded-md border border-gray-200 px-6 py-3 text-sm font-semibold text-[#0c3a2e] transition hover:bg-gray-50">{{ __('Back to Home') }}</a>
             </div>
         </div>
     </section>
+
+    {{-- Auto-open WhatsApp with the order details (best-effort; button stays for manual tap) --}}
+    <script>
+        window.addEventListener('load', function () {
+            var btn = document.getElementById('waOrder');
+            if (btn) { window.open(btn.href, '_blank'); }
+        });
+    </script>
 @endsection

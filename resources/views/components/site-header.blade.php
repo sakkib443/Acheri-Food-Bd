@@ -4,7 +4,7 @@
 
         {{-- Logo --}}
         <a href="{{ url('/') }}" class="flex shrink-0 items-center">
-            <img src="{{ asset('images/logo.png') }}" alt="Acheri Food Bd" class="h-16 w-auto object-contain lg:h-20">
+            <img src="{{ asset(config('site.logo')) }}" alt="{{ config('app.name') }}" class="h-16 w-auto object-contain lg:h-20">
         </a>
 
         {{-- Spacer --}}
@@ -54,16 +54,6 @@
                     </a>
                 </div>
             </details>
-
-            {{-- Sign In --}}
-            <a href="{{ route('admin.login') }}" class="flex flex-col items-center gap-1 text-[#0c3a2e] transition hover:text-[#f47b20]">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                     stroke="currentColor" stroke-width="1.6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                </svg>
-                <span class="text-[11px] font-medium">{{ __('Sign In') }}</span>
-            </a>
 
             {{-- Cart --}}
             <a href="{{ route('cart.index') }}" class="flex flex-col items-center gap-1 text-[#0c3a2e] transition hover:text-[#f47b20]">

@@ -10,10 +10,13 @@ return [
     | home hero banners. Override any value via the matching .env key.
     */
 
-    'whatsapp' => env('SITE_WHATSAPP', '8801700000000'),
-    'phone' => env('SITE_PHONE', '+880 1700-000000'),
-    'email' => env('SITE_EMAIL', 'info@acherifoodbd.com'),
-    'address' => env('SITE_ADDRESS', 'Dhaka, Bangladesh'),
+    'name' => env('APP_NAME', 'Acheri Food Bd'),
+    'logo' => 'images/logo.png',
+
+    'whatsapp' => env('SITE_WHATSAPP', '8801719507693'),
+    'phone' => env('SITE_PHONE', '01719507693'),
+    'email' => env('SITE_EMAIL', 'santahardigitalpostoffice@gmail.com'),
+    'address' => env('SITE_ADDRESS', 'Bogura, Dhaka, Bangladesh'),
 
     'delivery_charge' => (int) env('SITE_DELIVERY_CHARGE', 60),
 
@@ -21,7 +24,7 @@ return [
         'facebook' => env('SITE_FACEBOOK', '#'),
         'instagram' => env('SITE_INSTAGRAM', '#'),
         'youtube' => env('SITE_YOUTUBE', '#'),
-        'whatsapp' => 'https://wa.me/'.env('SITE_WHATSAPP', '8801700000000'),
+        'whatsapp' => 'https://wa.me/'.env('SITE_WHATSAPP', '8801719507693'),
     ],
 
     'hero' => [

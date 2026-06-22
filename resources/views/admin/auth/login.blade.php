@@ -11,7 +11,7 @@
         <div class="w-full max-w-sm">
             <div class="mb-6 text-center">
                 <span class="inline-flex rounded-xl bg-white p-3 shadow-sm">
-                    <img src="{{ asset('images/logo.png') }}" alt="Acheri Food Bd" class="h-14 w-auto object-contain">
+                    <img src="{{ asset(config('site.logo')) }}" alt="{{ config('app.name') }}" class="h-14 w-auto object-contain">
                 </span>
                 <h1 class="mt-4 font-display text-2xl font-bold tracking-wide text-[#0c3a2e]">{{ __('Admin Panel') }}</h1>
                 <p class="mt-1 text-sm text-gray-500">{{ __('Sign in to manage your store') }}</p>

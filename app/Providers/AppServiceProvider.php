@@ -71,5 +71,32 @@ class AppServiceProvider extends ServiceProvider
         if (! empty($values['whatsapp'])) {
             config(['site.social.whatsapp' => 'https://wa.me/'.$values['whatsapp']]);
         }
+
+        // Site name (brand) — overrides the app name everywhere.
+        if (! empty($values['site_name'])) {
+            config(['app.name' => $values['site_name'], 'site.name' => $values['site_name']]);
+        }
+
+        // Logo uploaded from the admin panel.
+        if (! empty($values['logo'])) {
+            config(['site.logo' => $values['logo']]);
+        }
+
+        // Hero banners uploaded from the admin panel — override each slot
+        // independently, keeping the config defaults for anything not set.
+        $hero = config('site.hero');
+        if (! empty($values['hero_1'])) {
+            $hero[0]['image'] = $values['hero_1'];
+        }
+        if (! empty($values['hero_1_link'])) {
+            $hero[0]['link'] = $values['hero_1_link'];
+        }
+        if (! empty($values['hero_2'])) {
+            $hero[1]['image'] = $values['hero_2'];
+        }
+        if (! empty($values['hero_2_link'])) {
+            $hero[1]['link'] = $values['hero_2_link'];
+        }
+        config(['site.hero' => $hero]);
     }
 }
