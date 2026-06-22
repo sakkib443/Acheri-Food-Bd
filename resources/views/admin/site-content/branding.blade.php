@@ -30,6 +30,19 @@
                         <p class="mt-1 text-xs text-gray-400">{{ __('PNG or JPG, up to 2MB. Transparent background recommended. Leave empty to keep current.') }}</p>
                         @error('logo') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                     </div>
+
+                    <div>
+                        <label for="favicon" class="mb-1.5 block text-sm font-medium text-[#0c3a2e]">{{ __('Favicon') }}</label>
+                        <div class="flex items-center gap-4">
+                            <span class="inline-flex shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white p-2">
+                                <img src="{{ asset(config('site.favicon')) }}" alt="{{ __('Favicon') }}" class="h-10 w-10 object-contain">
+                            </span>
+                            <input type="file" name="favicon" id="favicon" accept="image/png,image/svg+xml,image/x-icon,image/jpeg"
+                                   class="block w-full text-sm text-gray-600 file:mr-3 file:rounded-md file:border-0 file:bg-[#0c3a2e] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-[#0a2f25]">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-400">{{ __('The small icon shown in the browser tab. Square PNG or SVG, up to 1MB. Leave empty to keep current.') }}</p>
+                        @error('favicon') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                    </div>
                 </div>
             </div>
 

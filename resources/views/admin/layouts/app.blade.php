@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $title ?? 'Admin' }} — Acheri Food Bd</title>
+    <link rel="icon" href="{{ asset(config('site.favicon')) }}">
+    <link rel="shortcut icon" href="{{ asset(config('site.favicon')) }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen bg-[#f3f4f6] text-[#1b1b18] antialiased">

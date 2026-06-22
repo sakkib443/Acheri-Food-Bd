@@ -21,6 +21,7 @@ class SiteContentController extends Controller
         $request->validate([
             'site_name' => ['nullable', 'string', 'max:255'],
             'logo' => ['nullable', 'image', 'max:2048'],
+            'favicon' => ['nullable', 'image', 'max:1024'],
         ]);
 
         if ($request->filled('site_name')) {
@@ -29,6 +30,10 @@ class SiteContentController extends Controller
 
         if ($path = $this->storeImage($request, 'logo', 'logo')) {
             Setting::put('logo', $path);
+        }
+
+        if ($path = $this->storeImage($request, 'favicon', 'favicon')) {
+            Setting::put('favicon', $path);
         }
 
         return back()->with('success', __('Logo & name updated successfully.'));

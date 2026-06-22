@@ -5,7 +5,7 @@
       "name": "acheri",
       "runtimeExecutable": "php",
       "runtimeArgs": ["artisan", "serve", "--host=127.0.0.1", "--port=8000"],
-      "cwd": "F:\\Extrain Web\\Acheri-Food-Bd",
+      "cwd": "D:\\Ashraf Sir Project\\acheri-food-bd",
       "port": 8000
     }
   ]

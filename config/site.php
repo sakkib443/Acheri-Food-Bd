@@ -12,6 +12,7 @@ return [
 
     'name' => env('APP_NAME', 'Acheri Food Bd'),
     'logo' => 'images/logo.png',
+    'favicon' => 'images/Icon-03.png',
 
     'whatsapp' => env('SITE_WHATSAPP', '8801719507693'),
     'phone' => env('SITE_PHONE', '01719507693'),

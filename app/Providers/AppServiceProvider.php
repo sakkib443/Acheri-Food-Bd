@@ -82,6 +82,11 @@ class AppServiceProvider extends ServiceProvider
             config(['site.logo' => $values['logo']]);
         }
 
+        // Favicon (browser tab icon) uploaded from the admin panel.
+        if (! empty($values['favicon'])) {
+            config(['site.favicon' => $values['favicon']]);
+        }
+
         // Hero banners uploaded from the admin panel — override each slot
         // independently, keeping the config defaults for anything not set.
         $hero = config('site.hero');
