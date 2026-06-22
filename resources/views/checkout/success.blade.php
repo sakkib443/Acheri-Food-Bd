@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+    {{-- Automatically open WhatsApp with the order (same tab = reliable, not popup-blocked).
+         Runs once per order so returning from WhatsApp shows this confirmation page. --}}
+    <script>
+        (function () {
+            var key = 'wa_sent_' + @json($order->order_number);
+            if (!sessionStorage.getItem(key)) {
+                sessionStorage.setItem(key, '1');
+                window.location.href = @json($order->whatsappUrl());
+            }
+        })();
+    </script>
+
     <section class="py-12 lg:py-16">
         <div class="mx-auto max-w-2xl px-4 lg:px-8">
             <div class="rounded-2xl border border-gray-100 bg-white p-8 text-center shadow-sm">
@@ -49,7 +61,7 @@
 
             {{-- Send order to WhatsApp --}}
             <div class="mt-6 rounded-2xl border border-[#25D366]/30 bg-[#25D366]/5 p-6 text-center">
-                <p class="text-sm text-gray-600">{{ __('Please confirm your order by sending the details to us on WhatsApp.') }}</p>
+                <p class="text-sm text-gray-600">{{ __('WhatsApp is opening with your order details. If it did not open, tap below.') }}</p>
                 <a href="{{ $order->whatsappUrl() }}" target="_blank" rel="noopener" id="waOrder"
                    class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1da851] sm:w-auto">
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -65,12 +77,4 @@
             </div>
         </div>
     </section>
-
-    {{-- Auto-open WhatsApp with the order details (best-effort; button stays for manual tap) --}}
-    <script>
-        window.addEventListener('load', function () {
-            var btn = document.getElementById('waOrder');
-            if (btn) { window.open(btn.href, '_blank'); }
-        });
-    </script>
 @endsection
