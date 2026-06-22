@@ -21,7 +21,7 @@
                     <a href="{{ route('products.index', ['category' => $product->category]) }}" class="transition hover:text-[#f47b20]">{{ $product->category }}</a>
                 @endif
                 <span>/</span>
-                <span class="font-medium text-[#0c3a2e]">{{ $product->name }}</span>
+                <span class="font-medium text-[#0c3a2e]">{{ $product->display_name }}</span>
             </nav>
         </div>
     </section>
@@ -46,7 +46,7 @@
                             {{ __('Best Selling') }}
                         </span>
                     @endif
-                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
+                    <img src="{{ asset($product->image) }}" alt="{{ $product->display_name }}"
                          class="max-h-[360px] w-auto max-w-full object-contain drop-shadow-sm">
                 </div>
 
@@ -61,7 +61,7 @@
                     @endif
 
                     <h1 class="mt-3 font-display text-3xl font-bold leading-tight tracking-wide text-[#0c3a2e] lg:text-4xl">
-                        {{ $product->name }}
+                        {{ $product->display_name }}
                     </h1>
 
                     {{-- Price --}}
@@ -90,8 +90,8 @@
                         @endif
                     </div>
 
-                    @if ($product->description)
-                        <p class="mt-5 leading-relaxed text-gray-600">{{ $product->description }}</p>
+                    @if ($product->display_description)
+                        <div class="rich-text mt-5 text-gray-600">{!! $product->display_description !!}</div>
                     @endif
 
                     {{-- Quantity + actions --}}
@@ -121,7 +121,7 @@
                     </form>
 
                     {{-- WhatsApp order --}}
-                    <a href="https://wa.me/{{ config('site.whatsapp') }}?text={{ urlencode(__('I want to order:') . ' ' . $product->name) }}"
+                    <a href="https://wa.me/{{ config('site.whatsapp') }}?text={{ urlencode(__('I want to order:') . ' ' . $product->display_name) }}"
                        target="_blank" rel="noopener"
                        class="mt-4 inline-flex w-fit items-center gap-2 rounded-md bg-[#25D366] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1da851]">
                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">

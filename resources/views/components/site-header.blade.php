@@ -107,8 +107,7 @@
             @foreach ($navCategories as $cat)
                 <li>
                     <a href="{{ route('products.index', ['category' => $cat->name]) }}" class="flex items-center gap-1 whitespace-nowrap transition hover:text-[#f4a93c]">
-                        @if ($cat->emoji)<span aria-hidden="true">{{ $cat->emoji }}</span>@endif
-                        {{ __($cat->name) }}
+                        {{ $cat->display_name }}
                     </a>
                 </li>
             @endforeach

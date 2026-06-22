@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
     'name',
+    'name_bn',
     'slug',
     'category',
     'description',
+    'description_bn',
     'image',
     'price',
     'old_price',
@@ -43,6 +45,31 @@ class Product extends Model
             'is_best_selling' => 'boolean',
             'is_top_selling' => 'boolean',
         ];
+    }
+
+    /**
+     * Localized display name — Bangla when the app is in Bengali (falls back to
+     * the static translation or the English name when no Bangla name is set).
+     */
+    public function getDisplayNameAttribute(): string
+    {
+        if (app()->getLocale() === 'bn') {
+            return $this->name_bn ?: __($this->name);
+        }
+
+        return $this->name;
+    }
+
+    /**
+     * Localized description — Bangla when available and the app is in Bengali.
+     */
+    public function getDisplayDescriptionAttribute(): ?string
+    {
+        if (app()->getLocale() === 'bn') {
+            return $this->description_bn ?: $this->description;
+        }
+
+        return $this->description;
     }
 
     /**

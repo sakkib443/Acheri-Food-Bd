@@ -23,10 +23,14 @@
                 <div class="flex w-max animate-marquee">
                     @foreach ($navCategories->concat($navCategories) as $cat)
                         <a href="{{ route('products.index', ['category' => $cat->name]) }}" class="group mr-5 flex w-32 shrink-0 flex-col items-center gap-3">
-                            <div class="flex h-28 w-28 items-center justify-center rounded-2xl border border-gray-200/70 bg-white/40 transition group-hover:-translate-y-1">
-                                <span class="text-5xl leading-none">{{ $cat->emoji }}</span>
+                            <div class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-gray-200/70 bg-white/40 transition group-hover:-translate-y-1">
+                                @if ($cat->image)
+                                    <img src="{{ asset($cat->image) }}" alt="{{ $cat->display_name }}" class="h-full w-full object-cover">
+                                @else
+                                    <span class="text-5xl leading-none">{{ $cat->emoji }}</span>
+                                @endif
                             </div>
-                            <span class="text-center text-sm font-medium text-gray-700 group-hover:text-[#f47b20]">{{ __($cat->name) }}</span>
+                            <span class="text-center text-sm font-medium text-gray-700 group-hover:text-[#f47b20]">{{ $cat->display_name }}</span>
                         </a>
                     @endforeach
                 </div>
@@ -77,7 +81,7 @@
                             {{-- Image (soft gradient tile, zooms on hover) --}}
                             <div class="flex h-36 w-32 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#fff7ee] to-[#eef7e6] ring-1 ring-black/[0.03]">
                                 <a href="{{ route('products.show', $product) }}" class="flex h-full w-full items-center justify-center">
-                                    <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
+                                    <img src="{{ asset($product->image) }}" alt="{{ $product->display_name }}"
                                          class="max-h-[85%] max-w-[85%] object-contain drop-shadow-sm transition duration-300 group-hover:-rotate-2 group-hover:scale-110">
                                 </a>
                             </div>
@@ -85,7 +89,7 @@
                             {{-- Details --}}
                             <div class="min-w-0 flex-1">
                                 <h3 class="text-lg font-semibold text-[#0c3a2e]">
-                                    <a href="{{ route('products.show', $product) }}" class="transition hover:text-[#f47b20]">{{ __($product->name) }}</a>
+                                    <a href="{{ route('products.show', $product) }}" class="transition hover:text-[#f47b20]">{{ $product->display_name }}</a>
                                 </h3>
 
                                 <div class="mt-2 flex items-center gap-2">
@@ -158,14 +162,14 @@
 
                         {{-- Image --}}
                         <a href="{{ route('products.show', $product) }}" class="flex h-44 items-center justify-center overflow-hidden rounded-md">
-                            <img src="{{ asset($product->image) }}" alt="{{ __($product->name) }}"
+                            <img src="{{ asset($product->image) }}" alt="{{ $product->display_name }}"
                                  class="h-full w-full object-contain transition duration-300 group-hover:scale-105">
                         </a>
 
                         {{-- Details --}}
                         <div class="mt-3 flex flex-1 flex-col">
                             <h3 class="line-clamp-2 min-h-[2.5rem] text-sm font-medium text-gray-800">
-                                <a href="{{ route('products.show', $product) }}" class="transition hover:text-[#f47b20]">{{ __($product->name) }}</a>
+                                <a href="{{ route('products.show', $product) }}" class="transition hover:text-[#f47b20]">{{ $product->display_name }}</a>
                             </h3>
 
                             <div class="mt-2 flex items-center gap-2">
@@ -187,7 +191,7 @@
                                         {{ __('Add To Cart') }}
                                     </button>
                                 </form>
-                                <a href="https://wa.me/{{ config('site.whatsapp') }}?text={{ urlencode(__('I want to order:') . ' ' . $product->name) }}"
+                                <a href="https://wa.me/{{ config('site.whatsapp') }}?text={{ urlencode(__('I want to order:') . ' ' . $product->display_name) }}"
                                    target="_blank" rel="noopener" aria-label="WhatsApp"
                                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#25D366] text-white transition hover:bg-[#1da851]">
                                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">

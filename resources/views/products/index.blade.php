@@ -47,25 +47,33 @@
 
                     {{-- Categories --}}
                     <div class="rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
-                        <h3 class="text-sm font-semibold uppercase tracking-wide text-[#0c3a2e]">{{ __('Categories') }}</h3>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-semibold uppercase tracking-wide text-[#0c3a2e]">{{ __('Categories') }}</h3>
+                            @if ($activeCategories)
+                                <a href="{{ route('products.index', array_filter(['q' => $search ?: null, 'sort' => $sort !== 'default' ? $sort : null])) }}"
+                                   class="text-xs font-medium text-[#f47b20] hover:underline">{{ __('Clear') }}</a>
+                            @endif
+                        </div>
                         <span class="mt-2 block h-0.5 w-10 rounded bg-[#f47b20]"></span>
-                        <ul class="mt-4 space-y-1">
-                            <li>
-                                <a href="{{ route('products.index', array_filter(['sort' => $sort !== 'default' ? $sort : null])) }}"
-                                   class="flex items-center justify-between rounded-md px-3 py-2 text-sm transition {{ ! $activeCategory ? 'bg-[#0c3a2e] font-medium text-white' : 'text-gray-600 hover:bg-[#FBF9F5] hover:text-[#0c3a2e]' }}">
-                                    {{ __('All Products') }}
-                                </a>
-                            </li>
+
+                        <form action="{{ route('products.index') }}" method="GET" id="categoryFilter" class="mt-4 space-y-0.5">
+                            @if ($search)
+                                <input type="hidden" name="q" value="{{ $search }}">
+                            @endif
+                            @if ($sort && $sort !== 'default')
+                                <input type="hidden" name="sort" value="{{ $sort }}">
+                            @endif
+
                             @foreach ($navCategories as $cat)
-                                <li>
-                                    <a href="{{ route('products.index', array_filter(['category' => $cat->name, 'sort' => $sort !== 'default' ? $sort : null])) }}"
-                                       class="flex items-center gap-2 rounded-md px-3 py-2 text-sm transition {{ $activeCategory === $cat->name ? 'bg-[#0c3a2e] font-medium text-white' : 'text-gray-600 hover:bg-[#FBF9F5] hover:text-[#0c3a2e]' }}">
-                                        @if ($cat->emoji)<span aria-hidden="true">{{ $cat->emoji }}</span>@endif
-                                        {{ $cat->name }}
-                                    </a>
-                                </li>
+                                <label class="flex cursor-pointer items-center gap-2.5 rounded-md px-3 py-2 text-sm text-gray-600 transition hover:bg-[#FBF9F5] hover:text-[#0c3a2e]">
+                                    <input type="checkbox" name="category[]" value="{{ $cat->name }}"
+                                           onchange="document.getElementById('categoryFilter').submit()"
+                                           @checked(in_array($cat->name, $activeCategories))
+                                           class="h-4 w-4 shrink-0 rounded border-gray-300 accent-[#f47b20]">
+                                    <span>{{ $cat->display_name }}</span>
+                                </label>
                             @endforeach
-                        </ul>
+                        </form>
                     </div>
 
                     {{-- Help card --}}
@@ -94,9 +102,9 @@
                             @if ($search)
                                 <input type="hidden" name="q" value="{{ $search }}">
                             @endif
-                            @if ($activeCategory)
-                                <input type="hidden" name="category" value="{{ $activeCategory }}">
-                            @endif
+                            @foreach ($activeCategories as $c)
+                                <input type="hidden" name="category[]" value="{{ $c }}">
+                            @endforeach
                             <label for="sort" class="text-sm text-gray-500">{{ __('Sort by') }}</label>
                             <select name="sort" id="sort" onchange="this.form.submit()"
                                     class="rounded-md border border-gray-200 bg-white py-1.5 pl-3 pr-8 text-sm text-gray-700 focus:border-[#0c3a2e]/30 focus:outline-none focus:ring-2 focus:ring-[#0c3a2e]/15">

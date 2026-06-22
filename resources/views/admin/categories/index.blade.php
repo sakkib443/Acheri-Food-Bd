@@ -27,8 +27,12 @@
                         @foreach ($categories as $category)
                             <tr class="hover:bg-gray-50">
                                 <td class="px-5 py-3">
-                                    <span class="flex items-center gap-2 font-medium text-[#0c3a2e]">
-                                        <span class="text-xl leading-none">{{ $category->emoji }}</span>
+                                    <span class="flex items-center gap-2.5 font-medium text-[#0c3a2e]">
+                                        @if ($category->image)
+                                            <img src="{{ asset($category->image) }}" alt="{{ $category->name }}" class="h-9 w-9 shrink-0 rounded-md border border-gray-100 object-cover">
+                                        @else
+                                            <span class="flex h-9 w-9 items-center justify-center text-xl leading-none">{{ $category->emoji }}</span>
+                                        @endif
                                         {{ $category->name }}
                                     </span>
                                 </td>

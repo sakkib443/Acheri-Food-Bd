@@ -9,8 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[Fillable([
     'name',
+    'name_bn',
     'slug',
     'emoji',
+    'image',
     'sort_order',
     'is_active',
 ])]
@@ -35,6 +37,19 @@ class Category extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    /**
+     * Localized display name — Bangla when the app is in Bengali (falls back to
+     * the static translation or the English name when no Bangla name is set).
+     */
+    public function getDisplayNameAttribute(): string
+    {
+        if (app()->getLocale() === 'bn') {
+            return $this->name_bn ?: __($this->name);
+        }
+
+        return $this->name;
     }
 
     /**

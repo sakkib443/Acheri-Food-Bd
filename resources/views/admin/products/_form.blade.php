@@ -3,18 +3,34 @@
 <div class="grid gap-6 lg:grid-cols-3">
     {{-- Left: main fields --}}
     <div class="space-y-5 lg:col-span-2">
-        <div>
-            <label for="name" class="mb-1.5 block text-sm font-medium text-[#0c3a2e]">{{ __('Product Name') }} <span class="text-red-500">*</span></label>
-            <input type="text" name="name" id="name" value="{{ old('name', $product->name) }}" required
-                   class="w-full rounded-md border border-gray-200 px-3 py-2.5 text-sm focus:border-[#0c3a2e]/30 focus:outline-none focus:ring-2 focus:ring-[#0c3a2e]/15">
-            @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+                <label for="name" class="mb-1.5 block text-sm font-medium text-[#0c3a2e]">{{ __('Product Name (English)') }} <span class="text-red-500">*</span></label>
+                <input type="text" name="name" id="name" value="{{ old('name', $product->name) }}" required placeholder="Mango Pickle 1kg"
+                       class="w-full rounded-md border border-gray-200 px-3 py-2.5 text-sm focus:border-[#0c3a2e]/30 focus:outline-none focus:ring-2 focus:ring-[#0c3a2e]/15">
+                @error('name') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label for="name_bn" class="mb-1.5 block text-sm font-medium text-[#0c3a2e]">{{ __('Product Name (বাংলা)') }}</label>
+                <input type="text" name="name_bn" id="name_bn" value="{{ old('name_bn', $product->name_bn) }}" placeholder="আমের আচার ১ কেজি"
+                       class="w-full rounded-md border border-gray-200 px-3 py-2.5 text-sm focus:border-[#0c3a2e]/30 focus:outline-none focus:ring-2 focus:ring-[#0c3a2e]/15">
+                @error('name_bn') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+            </div>
         </div>
 
         <div>
-            <label for="description" class="mb-1.5 block text-sm font-medium text-[#0c3a2e]">{{ __('Description') }}</label>
-            <textarea name="description" id="description" rows="4"
-                      class="w-full rounded-md border border-gray-200 px-3 py-2.5 text-sm focus:border-[#0c3a2e]/30 focus:outline-none focus:ring-2 focus:ring-[#0c3a2e]/15">{{ old('description', $product->description) }}</textarea>
+            <label for="description" class="mb-1.5 block text-sm font-medium text-[#0c3a2e]">{{ __('Description (English)') }}</label>
+            <textarea name="description" id="description" rows="8"
+                      class="js-rich-editor w-full rounded-md border border-gray-200 px-3 py-2.5 text-sm focus:border-[#0c3a2e]/30 focus:outline-none focus:ring-2 focus:ring-[#0c3a2e]/15">{{ old('description', $product->description) }}</textarea>
             @error('description') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
+            <label for="description_bn" class="mb-1.5 block text-sm font-medium text-[#0c3a2e]">{{ __('Description (বাংলা)') }}</label>
+            <textarea name="description_bn" id="description_bn" rows="8"
+                      class="js-rich-editor w-full rounded-md border border-gray-200 px-3 py-2.5 text-sm focus:border-[#0c3a2e]/30 focus:outline-none focus:ring-2 focus:ring-[#0c3a2e]/15">{{ old('description_bn', $product->description_bn) }}</textarea>
+            <p class="mt-1 text-xs text-gray-400">{{ __('Use the toolbar to format text, add headings, lists, links and tables.') }}</p>
+            @error('description_bn') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
         </div>
 
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -99,3 +115,30 @@
         {{ __('Cancel') }}
     </a>
 </div>
+
+@push('scripts')
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+    <script>
+        document.querySelectorAll('.js-rich-editor').forEach(function (el) {
+            ClassicEditor
+                .create(el, {
+                    toolbar: [
+                        'heading', '|',
+                        'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+                        'outdent', 'indent', '|',
+                        'blockQuote', 'insertTable', 'undo', 'redo'
+                    ]
+                })
+                .then(editor => {
+                    editor.editing.view.change(writer => {
+                        writer.setStyle('min-height', '220px', editor.editing.view.document.getRoot());
+                    });
+                    const form = el.closest('form');
+                    if (form) {
+                        form.addEventListener('submit', () => editor.updateSourceElement());
+                    }
+                })
+                .catch(error => console.error(error));
+        });
+    </script>
+@endpush

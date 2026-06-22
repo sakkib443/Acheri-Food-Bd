@@ -9,7 +9,7 @@
 
     {{-- Image --}}
     <a href="{{ route('products.show', $product) }}" class="flex h-44 items-center justify-center overflow-hidden rounded-md bg-gradient-to-br from-[#fff7ee] to-[#eef7e6]">
-        <img src="{{ asset($product->image) }}" alt="{{ $product->name }}"
+        <img src="{{ asset($product->image) }}" alt="{{ $product->display_name }}"
              class="h-[85%] w-[85%] object-contain transition duration-300 group-hover:scale-105">
     </a>
 
@@ -20,7 +20,7 @@
         @endif
 
         <h3 class="mt-0.5 line-clamp-2 min-h-[2.5rem] text-sm font-medium text-gray-800">
-            <a href="{{ route('products.show', $product) }}" class="transition hover:text-[#f47b20]">{{ $product->name }}</a>
+            <a href="{{ route('products.show', $product) }}" class="transition hover:text-[#f47b20]">{{ $product->display_name }}</a>
         </h3>
 
         <div class="mt-2 flex items-center gap-2">
@@ -42,7 +42,7 @@
                     {{ __('Add To Cart') }}
                 </button>
             </form>
-            <a href="https://wa.me/{{ config('site.whatsapp') }}?text={{ urlencode(__('I want to order:') . ' ' . $product->name) }}"
+            <a href="https://wa.me/{{ config('site.whatsapp') }}?text={{ urlencode(__('I want to order:') . ' ' . $product->display_name) }}"
                target="_blank" rel="noopener" aria-label="WhatsApp"
                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[#25D366] text-white transition hover:bg-[#1da851]">
                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">

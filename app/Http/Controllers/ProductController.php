@@ -13,7 +13,8 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $search = trim((string) $request->query('q', ''));
-        $activeCategory = $request->query('category');
+        // Accept category as a single value (header links) or an array (sidebar checkboxes).
+        $activeCategories = array_values(array_filter((array) $request->query('category', [])));
         $sort = $request->query('sort', 'default');
 
         $products = Product::query()
@@ -24,7 +25,7 @@ class ProductController extends Controller
                         ->orWhere('category', 'like', "%{$search}%");
                 });
             })
-            ->when($activeCategory, fn ($query) => $query->where('category', $activeCategory))
+            ->when($activeCategories, fn ($query) => $query->whereIn('category', $activeCategories))
             ->when(true, function ($query) use ($sort) {
                 match ($sort) {
                     'price_low' => $query->orderBy('price'),
@@ -37,7 +38,10 @@ class ProductController extends Controller
             ->paginate(12)
             ->withQueryString();
 
-        return view('products.index', compact('products', 'activeCategory', 'search', 'sort'));
+        // Single value kept for the breadcrumb / page title.
+        $activeCategory = count($activeCategories) === 1 ? $activeCategories[0] : null;
+
+        return view('products.index', compact('products', 'activeCategory', 'activeCategories', 'search', 'sort'));
     }
 
     /**

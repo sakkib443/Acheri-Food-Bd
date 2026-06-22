@@ -25,7 +25,7 @@ return [
     ],
 
     'hero' => [
-        ['image' => 'images/banner-1.png', 'link' => '/products'],
+        ['image' => 'images/banner-1.jpeg', 'link' => '/products'],
         ['image' => 'images/banner-2.png', 'link' => '/products'],
     ],
 

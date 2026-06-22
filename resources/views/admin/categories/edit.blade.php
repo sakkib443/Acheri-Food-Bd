@@ -6,7 +6,7 @@
             &larr; {{ __('Back to categories') }}
         </a>
         <div class="mt-4 rounded-xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
-            <form action="{{ route('admin.categories.update', $category) }}" method="POST">
+            <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 @include('admin.categories._form', ['submitLabel' => __('Update Category')])
