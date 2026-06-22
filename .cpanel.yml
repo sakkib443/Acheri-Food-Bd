@@ -1,0 +1,31 @@
+---
+deployment:
+  tasks:
+    # App lives in ~/acheri, the public web root is ~/public_html.
+    # (.env and the customised public_html/index.php are NOT touched.)
+    - export APP=/home/acharifo/acheri
+    - export PUB=/home/acharifo/public_html
+
+    # --- application code -> ~/acheri ---
+    - /bin/rm -rf $APP/app
+    - /bin/cp -R app $APP/
+    - /bin/rm -rf $APP/config
+    - /bin/cp -R config $APP/
+    - /bin/rm -rf $APP/database
+    - /bin/cp -R database $APP/
+    - /bin/rm -rf $APP/lang
+    - /bin/cp -R lang $APP/
+    - /bin/rm -rf $APP/resources
+    - /bin/cp -R resources $APP/
+    - /bin/rm -rf $APP/routes
+    - /bin/cp -R routes $APP/
+    - /bin/rm -rf $APP/vendor
+    - /bin/cp -R vendor $APP/
+    - /bin/cp -f bootstrap/app.php $APP/bootstrap/app.php
+    - /bin/cp -f artisan $APP/artisan
+    - /bin/cp -f composer.json $APP/composer.json
+    - /bin/cp -f composer.lock $APP/composer.lock
+
+    # --- compiled front-end assets -> ~/public_html/build ---
+    - /bin/rm -rf $PUB/build
+    - /bin/cp -R public/build $PUB/
