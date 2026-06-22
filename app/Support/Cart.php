@@ -67,7 +67,22 @@ class Cart
 
     public static function clear(): void
     {
-        session()->forget(self::KEY);
+        session()->forget([self::KEY, 'coupon_code']);
+    }
+
+    public static function couponCode(): ?string
+    {
+        return session('coupon_code');
+    }
+
+    public static function setCoupon(string $code): void
+    {
+        session(['coupon_code' => $code]);
+    }
+
+    public static function forgetCoupon(): void
+    {
+        session()->forget('coupon_code');
     }
 
     public static function count(): int

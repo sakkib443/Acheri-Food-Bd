@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\CouponController as AdminCouponController;
+use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
@@ -26,6 +29,8 @@ Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.a
 Route::patch('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
 Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
+Route::post('/cart/coupon', [CartController::class, 'applyCoupon'])->name('cart.coupon.apply');
+Route::delete('/cart/coupon', [CartController::class, 'removeCoupon'])->name('cart.coupon.remove');
 
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
@@ -46,6 +51,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('categories', AdminCategoryController::class)->except('show');
         Route::resource('products', AdminProductController::class)->except('show');
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
+        Route::resource('coupons', AdminCouponController::class)->except('show');
+        Route::get('customers', [AdminCustomerController::class, 'index'])->name('customers.index');
+        Route::get('customers/{phone}', [AdminCustomerController::class, 'show'])->name('customers.show');
+        Route::get('settings', [AdminSettingsController::class, 'edit'])->name('settings.edit');
+        Route::put('settings', [AdminSettingsController::class, 'update'])->name('settings.update');
     });
 });
 

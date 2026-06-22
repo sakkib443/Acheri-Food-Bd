@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
 use App\Models\Order;
 use App\Support\Cart;
 use Illuminate\Http\Request;
@@ -19,9 +20,14 @@ class CheckoutController extends Controller
             return redirect()->route('products.index')->with('success', __('Your cart is empty.'));
         }
 
+        $subtotal = Cart::subtotal();
+        $coupon = Coupon::resolve(Cart::couponCode(), $subtotal);
+
         return view('checkout.index', [
             'items' => Cart::items(),
-            'subtotal' => Cart::subtotal(),
+            'subtotal' => $subtotal,
+            'coupon' => $coupon,
+            'discount' => $coupon?->discountFor($subtotal) ?? 0,
             'deliveryCharge' => (int) config('site.delivery_charge'),
         ]);
     }
@@ -47,14 +53,18 @@ class CheckoutController extends Controller
 
         $subtotal = Cart::subtotal();
         $delivery = (int) config('site.delivery_charge');
+        $coupon = Coupon::resolve(Cart::couponCode(), $subtotal);
+        $discount = $coupon?->discountFor($subtotal) ?? 0;
 
-        $order = DB::transaction(function () use ($data, $subtotal, $delivery) {
+        $order = DB::transaction(function () use ($data, $subtotal, $delivery, $discount, $coupon) {
             $order = Order::create([
                 ...$data,
                 'order_number' => $this->generateOrderNumber(),
+                'coupon_code' => $coupon?->code,
                 'subtotal' => $subtotal,
+                'discount' => $discount,
                 'delivery_charge' => $delivery,
-                'total' => $subtotal + $delivery,
+                'total' => max(0, $subtotal - $discount) + $delivery,
                 'status' => 'pending',
             ]);
 
@@ -66,6 +76,10 @@ class CheckoutController extends Controller
                     'quantity' => $item['qty'],
                     'line_total' => $item['price'] * $item['qty'],
                 ]);
+            }
+
+            if ($coupon) {
+                $coupon->increment('used_count');
             }
 
             return $order;

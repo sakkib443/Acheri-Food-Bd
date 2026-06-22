@@ -15,7 +15,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'city',
     'note',
     'payment_method',
+    'coupon_code',
     'subtotal',
+    'discount',
     'delivery_charge',
     'total',
     'status',
@@ -26,6 +28,7 @@ class Order extends Model
     {
         return [
             'subtotal' => 'integer',
+            'discount' => 'integer',
             'delivery_charge' => 'integer',
             'total' => 'integer',
         ];

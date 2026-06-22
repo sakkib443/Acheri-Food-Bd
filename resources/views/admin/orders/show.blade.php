@@ -38,6 +38,9 @@
             </table>
             <div class="space-y-2 border-t border-gray-100 px-5 py-4 text-sm">
                 <div class="flex justify-between"><span class="text-gray-500">{{ __('Subtotal') }}</span><span class="text-[#0c3a2e]">৳{{ number_format($order->subtotal) }}</span></div>
+                @if ($order->discount > 0)
+                    <div class="flex justify-between"><span class="text-[#5a8a2c]">{{ __('Discount') }}{{ $order->coupon_code ? ' ('.$order->coupon_code.')' : '' }}</span><span class="text-[#5a8a2c]">−৳{{ number_format($order->discount) }}</span></div>
+                @endif
                 <div class="flex justify-between"><span class="text-gray-500">{{ __('Delivery Charge') }}</span><span class="text-[#0c3a2e]">৳{{ number_format($order->delivery_charge) }}</span></div>
                 <div class="flex justify-between border-t border-gray-100 pt-2 text-base font-bold"><span class="text-[#0c3a2e]">{{ __('Total') }}</span><span class="text-[#f47b20]">৳{{ number_format($order->total) }}</span></div>
             </div>

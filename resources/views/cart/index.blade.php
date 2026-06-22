@@ -74,10 +74,36 @@
                     {{-- Summary --}}
                     <div class="h-fit rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
                         <h2 class="text-lg font-semibold text-[#0c3a2e]">{{ __('Order Summary') }}</h2>
+
+                        {{-- Coupon --}}
+                        <div class="mt-5">
+                            @if ($coupon)
+                                <div class="flex items-center justify-between rounded-lg border border-[#7cb342]/40 bg-[#7cb342]/10 px-3 py-2">
+                                    <span class="text-sm font-medium text-[#5a8a2c]">🎟 {{ $coupon->code }} {{ __('applied') }}</span>
+                                    <form action="{{ route('cart.coupon.remove') }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-xs font-semibold text-red-500 transition hover:text-red-600">{{ __('Remove') }}</button>
+                                    </form>
+                                </div>
+                            @else
+                                <form action="{{ route('cart.coupon.apply') }}" method="POST" class="flex gap-2">
+                                    @csrf
+                                    <input type="text" name="code" value="{{ old('code') }}" placeholder="{{ __('Coupon code') }}"
+                                           class="w-full rounded-md border border-gray-200 px-3 py-2 text-sm uppercase focus:border-[#0c3a2e]/30 focus:outline-none focus:ring-2 focus:ring-[#0c3a2e]/15">
+                                    <button type="submit" class="shrink-0 rounded-md bg-[#0c3a2e] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0a2f25]">{{ __('Apply') }}</button>
+                                </form>
+                                @error('code') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
+                            @endif
+                        </div>
+
                         <div class="mt-5 space-y-3 text-sm">
                             <div class="flex justify-between"><span class="text-gray-500">{{ __('Subtotal') }}</span><span class="font-medium text-[#0c3a2e]">৳{{ number_format($subtotal) }}</span></div>
+                            @if ($discount > 0)
+                                <div class="flex justify-between"><span class="text-[#5a8a2c]">{{ __('Discount') }}</span><span class="font-medium text-[#5a8a2c]">−৳{{ number_format($discount) }}</span></div>
+                            @endif
                             <div class="flex justify-between"><span class="text-gray-500">{{ __('Delivery Charge') }}</span><span class="font-medium text-[#0c3a2e]">৳{{ number_format($deliveryCharge) }}</span></div>
-                            <div class="flex justify-between border-t border-gray-100 pt-3 text-base"><span class="font-semibold text-[#0c3a2e]">{{ __('Total') }}</span><span class="font-bold text-[#f47b20]">৳{{ number_format($subtotal + $deliveryCharge) }}</span></div>
+                            <div class="flex justify-between border-t border-gray-100 pt-3 text-base"><span class="font-semibold text-[#0c3a2e]">{{ __('Total') }}</span><span class="font-bold text-[#f47b20]">৳{{ number_format(max(0, $subtotal - $discount) + $deliveryCharge) }}</span></div>
                         </div>
                         <a href="{{ route('checkout.index') }}" class="mt-6 flex items-center justify-center gap-2 rounded-md bg-[#f47b20] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#dd6c14]">
                             {{ __('Proceed to Checkout') }}

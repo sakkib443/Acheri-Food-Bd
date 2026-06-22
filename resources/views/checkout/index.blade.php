@@ -89,8 +89,11 @@
                     </div>
                     <div class="mt-4 space-y-3 border-t border-gray-100 pt-4 text-sm">
                         <div class="flex justify-between"><span class="text-gray-500">{{ __('Subtotal') }}</span><span class="font-medium text-[#0c3a2e]">৳{{ number_format($subtotal) }}</span></div>
+                        @if ($discount > 0)
+                            <div class="flex justify-between"><span class="text-[#5a8a2c]">{{ __('Discount') }}{{ $coupon ? ' ('.$coupon->code.')' : '' }}</span><span class="font-medium text-[#5a8a2c]">−৳{{ number_format($discount) }}</span></div>
+                        @endif
                         <div class="flex justify-between"><span class="text-gray-500">{{ __('Delivery Charge') }}</span><span class="font-medium text-[#0c3a2e]">৳{{ number_format($deliveryCharge) }}</span></div>
-                        <div class="flex justify-between border-t border-gray-100 pt-3 text-base"><span class="font-semibold text-[#0c3a2e]">{{ __('Total') }}</span><span class="font-bold text-[#f47b20]">৳{{ number_format($subtotal + $deliveryCharge) }}</span></div>
+                        <div class="flex justify-between border-t border-gray-100 pt-3 text-base"><span class="font-semibold text-[#0c3a2e]">{{ __('Total') }}</span><span class="font-bold text-[#f47b20]">৳{{ number_format(max(0, $subtotal - $discount) + $deliveryCharge) }}</span></div>
                     </div>
                     <button type="submit" class="mt-6 w-full rounded-md bg-[#f47b20] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#dd6c14]">
                         {{ __('Place Order') }}
