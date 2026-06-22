@@ -29,3 +29,6 @@ deployment:
     # --- compiled front-end assets -> ~/public_html/build ---
     - /bin/rm -rf $PUB/build
     - /bin/cp -R public/build $PUB/
+
+    # --- favicon -> ~/public_html ---
+    - /bin/cp -f public/favicon.svg $PUB/favicon.svg
