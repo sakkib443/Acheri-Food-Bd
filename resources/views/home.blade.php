@@ -7,6 +7,7 @@
             @foreach (config('site.hero') as $banner)
                 <a href="{{ $banner['link'] }}" class="block overflow-hidden rounded-md">
                     <img src="{{ asset($banner['image']) }}" alt="Banner"
+                         @if ($loop->first) fetchpriority="high" decoding="async" @else loading="lazy" decoding="async" @endif
                          class="block h-auto w-full transition duration-300 hover:scale-[1.03]">
                 </a>
             @endforeach
@@ -25,7 +26,7 @@
                         <a href="{{ route('products.index', ['category' => $cat->name]) }}" class="group mr-5 flex w-32 shrink-0 flex-col items-center gap-3">
                             <div class="flex h-28 w-28 items-center justify-center overflow-hidden rounded-2xl border border-gray-200/70 bg-white/40 transition group-hover:-translate-y-1">
                                 @if ($cat->image)
-                                    <img src="{{ asset($cat->image) }}" alt="{{ $cat->display_name }}" class="h-full w-full object-cover">
+                                    <img src="{{ asset($cat->image) }}" alt="{{ $cat->display_name }}" loading="lazy" decoding="async" class="h-full w-full object-cover">
                                 @else
                                     <span class="text-5xl leading-none">{{ $cat->emoji }}</span>
                                 @endif
@@ -82,6 +83,7 @@
                             <div class="flex h-36 w-32 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#fff7ee] to-[#eef7e6] ring-1 ring-black/[0.03]">
                                 <a href="{{ route('products.show', $product) }}" class="flex h-full w-full items-center justify-center">
                                     <img src="{{ asset($product->image) }}" alt="{{ $product->display_name }}"
+                                         loading="lazy" decoding="async"
                                          class="max-h-[85%] max-w-[85%] object-contain drop-shadow-sm transition duration-300 group-hover:-rotate-2 group-hover:scale-110">
                                 </a>
                             </div>
@@ -163,6 +165,7 @@
                         {{-- Image --}}
                         <a href="{{ route('products.show', $product) }}" class="flex h-44 items-center justify-center overflow-hidden rounded-md">
                             <img src="{{ asset($product->image) }}" alt="{{ $product->display_name }}"
+                                 loading="lazy" decoding="async"
                                  class="h-full w-full object-contain transition duration-300 group-hover:scale-105">
                         </a>
 
@@ -245,6 +248,7 @@
                 <div class="relative overflow-hidden rounded-[2rem] border border-gray-100 bg-white p-6 shadow-xl shadow-[#0c3a2e]/5 sm:p-8">
                     <div class="flex aspect-square items-center justify-center rounded-2xl bg-gradient-to-br from-[#faf7f2] to-[#f3ece0]">
                         <img src="{{ asset(config('site.logo')) }}" alt="{{ config('app.name') }}"
+                             loading="lazy" decoding="async"
                              class="h-32 w-auto object-contain lg:h-40">
                     </div>
                 </div>

@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SiteContentController as AdminSiteContentControll
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -68,12 +69,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
-Route::get('/language/{locale}', function (string $locale) {
-    if (in_array($locale, ['en', 'bn'])) {
-        session(['locale' => $locale]);
-    }
-    return back();
-})->name('language.switch');
+Route::get('/language/{locale}', LanguageController::class)->name('language.switch');
 
 /*
 |--------------------------------------------------------------------------

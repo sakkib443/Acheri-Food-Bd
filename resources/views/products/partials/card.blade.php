@@ -10,6 +10,7 @@
     {{-- Image --}}
     <a href="{{ route('products.show', $product) }}" class="flex h-44 items-center justify-center overflow-hidden rounded-md bg-gradient-to-br from-[#fff7ee] to-[#eef7e6]">
         <img src="{{ asset($product->image) }}" alt="{{ $product->display_name }}"
+             loading="lazy" decoding="async"
              class="h-[85%] w-[85%] object-contain transition duration-300 group-hover:scale-105">
     </a>
 

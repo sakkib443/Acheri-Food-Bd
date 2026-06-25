@@ -23,3 +23,49 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# ============================================================
+#  Performance: gzip compression + browser caching
+#  (Each block is wrapped in <IfModule> so it is silently
+#   ignored if the host does not have that Apache module.)
+# ============================================================
+
+# ----- Gzip / DEFLATE compression -----
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript text/javascript
+    AddOutputFilterByType DEFLATE application/json application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml application/vnd.ms-fontobject application/x-font-ttf font/ttf font/otf font/woff font/woff2
+</IfModule>
+
+# ----- Browser caching (Expires headers) -----
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Hashed build assets (CSS/JS) never change -> cache 1 year
+    ExpiresByType text/css                "access plus 1 year"
+    ExpiresByType application/javascript  "access plus 1 year"
+    ExpiresByType text/javascript         "access plus 1 year"
+
+    # Images & fonts -> cache 1 year
+    ExpiresByType image/jpeg              "access plus 1 year"
+    ExpiresByType image/png               "access plus 1 year"
+    ExpiresByType image/gif               "access plus 1 year"
+    ExpiresByType image/webp             "access plus 1 year"
+    ExpiresByType image/svg+xml           "access plus 1 year"
+    ExpiresByType image/x-icon            "access plus 1 year"
+    ExpiresByType font/woff               "access plus 1 year"
+    ExpiresByType font/woff2              "access plus 1 year"
+    ExpiresByType font/ttf                "access plus 1 year"
+    ExpiresByType application/vnd.ms-fontobject "access plus 1 year"
+
+    # HTML pages -> always revalidate (so content updates show instantly)
+    ExpiresByType text/html               "access plus 0 seconds"
+</IfModule>
+
+# ----- Long-lived immutable cache for the hashed /build assets -----
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|woff2?|ttf|otf|eot|svg|jpe?g|png|gif|webp|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>

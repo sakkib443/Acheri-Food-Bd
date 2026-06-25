@@ -32,5 +32,17 @@ deployment:
 
     # --- favicon -> ~/public_html ---
     - /bin/cp -f public/favicon.svg $PUB/favicon.svg
+
+    # --- images -> ~/public_html/images ---
+    # Overlay copy (no rm): refreshes the optimized default banners/logo while
+    # leaving any admin-uploaded images already on the server untouched.
     - /bin/mkdir -p $PUB/images
-    - /bin/cp -f public/images/Icon-03.png $PUB/images/Icon-03.png
+    - /bin/cp -Rf public/images/. $PUB/images/
+
+    # --- performance: gzip + browser-cache rules for the web root ---
+    - /bin/cp -f public/.htaccess $PUB/.htaccess
+
+    # --- rebuild Laravel caches so the FIRST request after deploy is fast ---
+    # (config + routes + views compiled ahead of time; OPcache warms on first hit)
+    - cd $APP && /bin/rm -rf bootstrap/cache/*.php || true
+    - cd $APP && php artisan optimize || true
