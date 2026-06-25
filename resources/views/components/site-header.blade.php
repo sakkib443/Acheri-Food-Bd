@@ -4,7 +4,7 @@
 
         {{-- Logo --}}
         <a href="{{ url('/') }}" class="flex shrink-0 items-center">
-            <img src="{{ asset(config('site.logo')) }}" alt="{{ config('app.name') }}" class="h-12 w-auto object-contain lg:h-14">
+            <img src="{{ asset(config('site.logo')) }}" alt="{{ config('app.name') }}" fetchpriority="high" decoding="async" class="h-12 w-auto object-contain lg:h-14">
         </a>
 
         {{-- Spacer --}}

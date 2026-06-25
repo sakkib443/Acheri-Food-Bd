@@ -22,6 +22,7 @@
 /storage/pail
 # /vendor  — committed on purpose for cPanel git deploy (no Composer on the host)
 _ide_helper.php
+/_image_backups_orig
 Homestead.json
 Homestead.yaml
 Thumbs.db

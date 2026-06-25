@@ -47,6 +47,7 @@
                         </span>
                     @endif
                     <img src="{{ asset($product->image) }}" alt="{{ $product->display_name }}"
+                         fetchpriority="high" decoding="async"
                          class="max-h-[360px] w-auto max-w-full object-contain drop-shadow-sm">
                 </div>
 
